@@ -18,6 +18,7 @@ namespace APIDAL.Models
             // some validations and configurations can be added here
             modelBuilder.Entity<Books>()
        .HasIndex(b => b.BookName)
+       
        .IsUnique();
         }
 

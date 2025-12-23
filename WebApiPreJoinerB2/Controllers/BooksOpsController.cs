@@ -15,17 +15,18 @@ namespace WebApiPreJoinerB2.Controllers
             _book = book;
         }
 
-        [HttpGet]
-        [Route("Bookslist")]
+        [HttpGet("GetAllBooks")]
+
         public async Task<IActionResult> GetAllBooks()
         {
             var books = await _book.GetAllBooksAsync();
             return Ok(books);  // status code 200
         }
 
-        [HttpGet("{id}", Name = "GetBookById")]
+        [HttpGet("GetBookById/{Id}")]
 
-        public async Task<IActionResult> GetBookById(int id)
+
+        public async Task<IActionResult> GetBookById([FromQuery]int id)
         {
             if (id <= 0)
                 return BadRequest("Invalid book ID."); // 400
@@ -34,32 +35,34 @@ namespace WebApiPreJoinerB2.Controllers
                 return NotFound(); // 404
             return Ok(book); // 200
         }
-        [HttpPost]
-        [Route("AddBook")]
-        public async Task<IActionResult> AddBook(Books book)
+
+
+        [HttpPost("AddBooks")]
+        public async Task<IActionResult> AddBook([FromBody] Books book)
         {
             try
             {
                 var addedBook = await _book.AddBookAsync(book); // server down
                 return CreatedAtAction(nameof(GetBookById), new { id = addedBook.Id }, addedBook); // 201
-
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}"); 
             }
         }
-        [HttpPut("{id}")]
 
-        public async Task<IActionResult> UpdateBook(int id, Books book)
+
+        [HttpPut("UpdateBook")]
+        public async Task<IActionResult> UpdateBook([FromRoute]int id, [FromBody]Books book)
         {
             var updatedBook = await _book.UpdateBookAsync(id, book);
             if (updatedBook == null)
                 return NotFound();
             return Ok(updatedBook);
         }
-        [HttpDelete("{id}", Name = "DeleteBook")]
 
+
+        [HttpDelete("DeleteBook/{Id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
             var result = await _book.DeleteBookAsync(id);
