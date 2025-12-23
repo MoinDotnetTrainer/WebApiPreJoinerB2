@@ -1,0 +1,6 @@
+@WebApiPreJoinerB2_HostAddress = http://localhost:5068
+
+GET {{WebApiPreJoinerB2_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
