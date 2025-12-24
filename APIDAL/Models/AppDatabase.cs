@@ -24,5 +24,7 @@ namespace APIDAL.Models
 
 
         public DbSet<Books> Books { get; set; }
+
+        public DbSet<Users> Users { get; set; }
     }
 }
